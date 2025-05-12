@@ -1,0 +1,24 @@
+GET http://localhost:3000/api/stack/16b4818c-197a-42de-8afa-5ca556fa8910
+
+### Create a new Stack under a Subject
+POST http://localhost:3000/api/stack/16b4818c-197a-42de-8afa-5ca556fa8910
+Content-Type: application/json
+
+{
+  "name": "Algebra ",
+  "description": "Introductory algebra stack "
+}
+###
+### Delete a Stack and Cascade Delete Related Data
+DELETE http://localhost:3000/api/stack/f26449e1-3eef-4023-b9e3-61ef32c8bac2
+Content-Type: application/json
+
+### PUT request to update Stack name and description
+PUT http://localhost:3000/api/stack/d47f23e5-c46f-4e0a-9185-dba3c2314c5d
+Content-Type: application/json
+
+{
+  "name": "Algebra",
+  "description": "Basics."
+}
+###

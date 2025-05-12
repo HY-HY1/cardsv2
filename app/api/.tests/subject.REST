@@ -1,0 +1,28 @@
+GET http://localhost:3000/api/subject
+###
+POST http://localhost:3000/api/subject
+Content-Type: application/json
+
+{
+    "name": "Maths"
+}
+###
+GET http://localhost:3000/api/subject/5f8d40f4-bbb8-4712-8cd5-cd74fe06431b
+Content-Type: application/json
+
+
+###
+PUT http://localhost:3000/api/subject/9ad60aea-4883-4297-aed9-fdf594de46cc
+Content-Type: application/json
+
+{
+    "name": "Maths",
+    "description":""
+}
+###
+DELETE http://localhost:3000/api/subject/d62784e1-9181-470b-8a1c-352b77611798
+Content-Type: application/json
+
+{
+    "name": "Maths"
+}
