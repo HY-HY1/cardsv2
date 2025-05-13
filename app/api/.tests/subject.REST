@@ -4,7 +4,7 @@ POST http://localhost:3000/api/subject
 Content-Type: application/json
 
 {
-    "name": "Maths"
+    "name": "CS"
 }
 ###
 GET http://localhost:3000/api/subject/5f8d40f4-bbb8-4712-8cd5-cd74fe06431b

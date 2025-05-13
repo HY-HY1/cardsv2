@@ -1,75 +1,33 @@
-"use client"
+// hooks/useSubjects.ts
 import { CreateSubject, EditSubject } from "@/types/RequestTypes"
+import { GetSubjectsRequestTypes } from "@/types/ResponseTypes"
 import axios, { AxiosResponse } from "axios"
-import { useState } from "react"
 
-export function useSubjects() {
-    const [ loading , setLoading ] = useState<boolean>(true)
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL + "/api"
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL + '/api'
+export async function getSubjectsRequest() {
+  const response : AxiosResponse<GetSubjectsRequestTypes> = await axios.get(`${baseUrl}/subject`)
+  return response.data
+}
 
-    async function getSubjects() : Promise<void> {
-        try {
-            const response = await axios.get(`${baseUrl}/subject`)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+export async function getSubjectByIdRequest(id: string) {
+  const response = await axios.get(`${baseUrl}/subject/${id}`)
+  return response.data
+}
 
-    async function createSubject({ name, description}: CreateSubject ) : Promise<void> {
-        try {
-            const response = await axios.post(`${baseUrl}/subject`,
-                { name: name, description: description}, 
-                {
-                    headers: {
-                        "Content-Type" : "application/json"
-                    }
-                }
-            )
-        } catch (error) {
-            console.error(error)
-        }
-    }
+export async function createSubjectRequest(data: CreateSubject) {
+  await axios.post(`${baseUrl}/subject`, data, {
+    headers: { "Content-Type": "application/json" },
+  })
+}
 
-    async function getSubjectById(id: string) : Promise<void> {
-        try {
-            const response = await axios.get(`${baseUrl}/subject/${id}`,
-                {
-                    headers: {
-                        "Content-Type" : "application/json"
-                    }
-                }
-            )
-        } catch (error) {
-            console.error(error)
-        }
-    }
+export async function editSubjectRequest(data: EditSubject) {
+  const { id, name, description } = data
+  await axios.put(`${baseUrl}/subject/${id}`, { name, description }, {
+    headers: { "Content-Type": "application/json" },
+  })
+}
 
-    async function editSubject({ name, description, id } : EditSubject) : Promise<void> {
-        try {
-            const response = await axios.put(`${baseUrl}/subject/${id}`,
-                {name: name, description: description},
-                {
-                    headers: {
-                        "Content-Type" : "application/json"
-                    }
-                }
-            )
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    async function deleteSubject(id: string) : Promise<void> {
-        try {
-            const response = await axios.delete(`${baseUrl}/subject/${id}`)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    return { getSubjectById, getSubjects, createSubject, deleteSubject, editSubject}
-
-
-
+export async function deleteSubjectRequest(id: string) {
+  await axios.delete(`${baseUrl}/subject/${id}`)
 }

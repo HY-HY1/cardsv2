@@ -1,5 +1,5 @@
 export interface CreateSubject {
-    name: string,
+    name: string ,
     description: string | undefined
 }
 
