@@ -16,3 +16,29 @@ export interface Subject extends BaseFlashcard {
 export interface GetSubjectsRequestTypes {
     results: Subject[] 
   }
+
+  export interface Stack extends BaseFlashcard {
+    uuid: string;
+    cardIds: string[];
+    name: string; // Add name
+    description: string; // Add description
+  };
+  
+
+export type GetStackResponse = {
+  stacks: Stack[];
+};
+
+export type CreateStackResponse = {
+  message: string; 
+  stack: Stack[]
+}
+
+export type DeleteStackResponse = {
+  message: string;
+};
+
+export type EditStackResponse = {
+  stack: Stack;
+  message: string;
+};
