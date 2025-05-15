@@ -9,3 +9,9 @@ export interface EditSubject extends CreateSubject {
 }
 export interface CreateStack extends CreateSubject {}
 export interface EditStack extends CreateSubject {}
+
+export interface CreateCard {
+    question: string,
+    answer: string,
+    hint: string | undefined
+}

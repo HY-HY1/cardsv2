@@ -3,6 +3,7 @@
 
 import { AppSidebar } from '@/components/layout/sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import ContextProvider from '@/context';
 import { StacksProvider } from '@/context/StackContext';
 import { SubjectsProvider } from '@/context/SubjectContext';
 
@@ -13,14 +14,12 @@ export default function AppLayout({
 }) {
   return (
     <SidebarProvider>
-      <SubjectsProvider>
-        <StacksProvider>
+        <ContextProvider>
         <div className="flex w-full">
           <AppSidebar />
           <main className="flex-1 w-full">{children}</main>
         </div>
-        </StacksProvider>
-      </SubjectsProvider>
+        </ContextProvider>
     </SidebarProvider>
   );
 }

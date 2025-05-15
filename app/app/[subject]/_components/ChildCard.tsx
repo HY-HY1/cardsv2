@@ -1,5 +1,5 @@
-import * as React from "react"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,30 +7,33 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Stack } from "@/types/ResponseTypes"
+} from "@/components/ui/card";
+import { Stack } from "@/types/ResponseTypes";
+import Link from "next/link";
 
 // Accept the prop as `data: { stack: Stack }` or destructure it as `{ name, description }`
 interface ChildCardProps {
-  stack: Stack
+  stack: Stack;
 }
 
+import { useParams } from "next/navigation";
+
 const ChildCard: React.FC<ChildCardProps> = ({ stack }) => {
+  const { subject } = useParams();
   return (
     <Card className="w-full min-w-[150px]">
       <CardHeader>
         <CardTitle>{stack.name}</CardTitle>
         <CardDescription>{stack.description}</CardDescription>
       </CardHeader>
-      <CardContent>
-        hello
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
+      <CardContent>hello</CardContent>
+      <Link href={`/app/${subject}/${stack.uuid}`}>
+        <CardFooter className="flex justify-between w-full">
+          <Button className="w-full">Enter</Button>
+        </CardFooter>
+      </Link>
     </Card>
-  )
-}
+  );
+};
 
-export default ChildCard
+export default ChildCard;

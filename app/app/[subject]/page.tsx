@@ -16,8 +16,7 @@ import { Plus } from "lucide-react";
 
 const SubjectPage = () => {
   const { subject } = useParams(); // Get 'subject' from the URL params
-  const { subjects, loading: subjectLoading, editSubject, deleteSubject } =
-    useSubjectsContext();
+  const { subjects, loading: subjectLoading, editSubject, deleteSubject } = useSubjectsContext();
   const { stacks, loading: stacksLoading, getStacks, createStack } = useStacksContext();
   const [currentSubject, setCurrentSubject] = useState<Subject | null>(null);
 
