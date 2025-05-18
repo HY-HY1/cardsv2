@@ -23,17 +23,20 @@ const SubjectPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof subject === 'string') {
-      // Fetch stacks for the subject when the page loads or subjectId changes
+    if (typeof subject === "string") {
+      // Fetch stacks for the subject when the page loads or subject changes
       getStacks(subject);
     }
-  }, []);
+  }, [subject, getStacks]);
 
   useEffect(() => {
     if (!subject || !subjects) return;
     const found = subjects.find((s) => s.uuid === subject);
     setCurrentSubject(found || null);
   }, [subject, subjects]);
+
+  // Filter stacks to only those belonging to currentSubject
+  const filteredStacks = stacks.filter((stack) => stack.subjectId === currentSubject?.uuid);
 
   if (subjectLoading || stacksLoading) {
     return <div>Loading...</div>;
@@ -86,28 +89,31 @@ const SubjectPage = () => {
       </header>
 
       <div className="mt-4 w-full">
-        {stacks.length > 0 ? (
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {stacks.map((stack) => (
-              <div className="w-full">
-                <ChildCard key={stack.uuid} stack={stack} />
+        {filteredStacks.length > 0 ? (
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredStacks.map((stack) => (
+              <div className="w-full" key={stack.uuid}>
+                <ChildCard stack={stack} />
               </div>
             ))}
+
             <Dialog>
-                <DialogTrigger asChild>
-                  <div className="w-full flex h-full rounded-lg border shadow-sm min-h-[200px]">
-                    <Button className="m-auto" variant={"outline"}><span><Plus size={16}/></span>Create New</Button>
-                    </div>
-                </DialogTrigger>
-                <CreateParent
-                  title={`Create a ${currentSubject.name} stack`}
-                  description={`Create a new stack under "${currentSubject.name}".`}
-                  onClickFunction={({ name, description }) => {
-                    createStack(currentSubject.uuid, { name, description });
-                  }}
-                />
-              </Dialog>
-            </div>
+              <DialogTrigger asChild>
+                <div className="w-full flex h-full rounded-lg border shadow-sm min-h-[200px]">
+                  <Button className="m-auto" variant={"outline"}>
+                    <Plus size={16} /> Create New
+                  </Button>
+                </div>
+              </DialogTrigger>
+              <CreateParent
+                title={`Create a ${currentSubject.name} stack`}
+                description={`Create a new stack under "${currentSubject.name}".`}
+                onClickFunction={({ name, description }) => {
+                  createStack(currentSubject.uuid, { name, description });
+                }}
+              />
+            </Dialog>
+          </div>
         ) : (
           <div className="w-full h-[400px] flex flex-col items-center justify-center text-center">
             <div className="w-[40%]">

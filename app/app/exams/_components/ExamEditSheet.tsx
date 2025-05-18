@@ -17,7 +17,10 @@ interface ExamEditSheetProps {
     examId?: string
 }
 
+import { useExams } from "@/context/ExamContext"
+
 export function ExamEditSheet({ examId}: ExamEditSheetProps) {
+  const { deleteExam } = useExams()
   return (
 
       <SheetContent className="min-w-[25vw]">
@@ -33,7 +36,10 @@ export function ExamEditSheet({ examId}: ExamEditSheetProps) {
             </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
+            <div className="w-full flex flex-col ">
+            <span className="py-2 w-full">{ examId ? <Button variant={"destructive"} onClick={() => deleteExam(examId)} className="py-4 w-full" type="submit">Delete</Button> : <></>}</span>
+            <Button variant={"outline"} type="submit">Close</Button>
+            </div>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

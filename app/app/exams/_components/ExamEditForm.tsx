@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSubjectsContext } from "@/context/SubjectContext";
-import * as React from "react";
+import { useExams } from "@/context/ExamContext";
 
 const examFormSchema = z.object({
   examSubject: z.string().min(2, {
@@ -47,7 +47,7 @@ interface ExamFormProps {
 
 export function ExamForm({ examId }: ExamFormProps) {
   const { subjects } = useSubjectsContext();
-  const [stackIds, setStackIds] = React.useState<string[]>([]);
+  const { createExam, updateExam } = useExams();
 
   const form = useForm<z.infer<typeof examFormSchema>>({
     resolver: zodResolver(examFormSchema),
@@ -59,35 +59,30 @@ export function ExamForm({ examId }: ExamFormProps) {
     },
   });
 
-  const watchSubject = form.watch("examSubject");
-
-  React.useEffect(() => {
-    const selectedSubject = subjects.find((s) => s.name === watchSubject);
-    if (selectedSubject) {
-      setStackIds(selectedSubject.stackIds || []);
-    } else {
-      setStackIds([]);
-    }
-    console.log(stackIds)
-  }, [watchSubject, subjects]);
-
   function onSubmit(values: z.infer<typeof examFormSchema>) {
+    console.log("Form submitted with values:", values);
+
     const selectedSubject = subjects.find((s) => s.name === values.examSubject);
 
-    const formattedData = {
-      ...values,
-      subjectId: selectedSubject?.uuid,
-      stackIds: selectedSubject?.stackIds || [],
-      examDate: new Date(values.examDate),
+    if (!selectedSubject) {
+      console.log("Couldnt Find Subject")
+      return;
+    }
+    console.log("uuid ",selectedSubject.uuid )
+
+    const apiValues = {
+      examBoard: values.examBoard,
+      examSubject: values.examSubject,
+      ExamDate: values.examDate, // Capitalized key expected by API
+      examComponent: values.examComponent,
+      SubjectId: selectedSubject.uuid,
     };
 
     if (examId) {
-      // Update logic
+      updateExam(examId, apiValues);
     } else {
-      // Create logic
+      createExam(apiValues);
     }
-
-    console.log("Submitted Exam:", formattedData);
   }
 
   return (
@@ -132,7 +127,7 @@ export function ExamForm({ examId }: ExamFormProps) {
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select an examboard" />
+                    <SelectValue placeholder="Select an exam board" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>

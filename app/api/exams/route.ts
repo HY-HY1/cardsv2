@@ -20,9 +20,11 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { examBoard, examSubject, SubjectId, examDate, examComponent, Stacks } = await req.json();
+    const { examBoard, examSubject, SubjectId, ExamDate, examComponent, Stacks } = await req.json();
 
-    if (!examBoard || !examSubject || !examDate || !examComponent || !SubjectId) {
+    
+
+    if (!examBoard || !examSubject || !ExamDate || !examComponent || !SubjectId) {
       return NextResponse.json({ error: "Required fields are missing" }, { status: 400 });
     }
 
@@ -39,7 +41,7 @@ export async function POST(req: Request) {
       examComponent,
       SubjectId,
       Stacks, // Should be an array of UUID strings
-      ExamDate: new Date(examDate), // Ensures date is parsed correctly
+      ExamDate: new Date(ExamDate), // Ensures date is parsed correctly
     });
 
     return NextResponse.json({ exam: newExam }, { status: 201 });

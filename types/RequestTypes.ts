@@ -25,13 +25,12 @@ export interface CreateCard {
 }
 
 export interface CreateExamRequest {
-    examBoard: string;
-    examSubject: string;
-    SubjectId: string;
-    examDate: string; // ISO string
-    examComponent: string;
-    Stacks?: string[]; // array of UUIDs
-  }
+  examBoard: string;
+  examSubject: string;
+  ExamDate: string;  // <-- capital 'E' as expected by CreateExamRequest
+  examComponent: string;
+  SubjectId: string;
+}
   
 
   export interface ExamBase {
