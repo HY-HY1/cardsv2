@@ -78,7 +78,7 @@ const SubjectPage = () => {
               id={currentSubject.uuid}
               onClickFunction={(id) => {
                 deleteSubject(id);
-                router.push("/app");
+                router.push("/app/cards");
               }}
             />
           </AlertDialog>
@@ -95,7 +95,7 @@ const SubjectPage = () => {
             ))}
             <Dialog>
                 <DialogTrigger asChild>
-                  <div className="w-full flex h-full rounded-lg border shadow-sm">
+                  <div className="w-full flex h-full rounded-lg border shadow-sm min-h-[200px]">
                     <Button className="m-auto" variant={"outline"}><span><Plus size={16}/></span>Create New</Button>
                     </div>
                 </DialogTrigger>

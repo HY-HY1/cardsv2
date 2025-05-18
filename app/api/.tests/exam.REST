@@ -1,0 +1,42 @@
+### Get all exams
+GET http://localhost:3000/api/exams
+Content-Type: application/json
+
+###
+
+### Create a new exam
+POST http://localhost:3000/api/exams
+Content-Type: application/json
+
+{
+  "examBoard": "OCR",
+  "examSubject": "Computer Science",
+  "examComponent": "Paper 2",
+  "examDate": "2025-06-05",
+  "SubjectId": "SUBJECT_UUID_HERE",
+  "Stacks": ["id-1", "id-2"]
+}
+
+###
+### Link stack to exam
+PUT http://localhost:3000/api/exams/5b1cb541-710a-46bc-bfc1-49396221c326/8c3a8ee6-702a-44ae-abf8-8d84f39de8b0
+Content-Type: application/json
+
+###
+
+### Unlink stack from exam
+DELETE http://localhost:3000/api/exams/5b1cb541-710a-46bc-bfc1-49396221c326/id-2
+
+### Get a specific exam by UUID
+### Update exam by UUID
+PUT http://localhost:3000/api/exams/5b1cb541-710a-46bc-bfc1-49396221c326
+Content-Type: application/json
+
+{
+  "examSubject": "Updated Biology",
+  "examComponent": "Updated Paper 1",
+  "examBoard": "AQA"
+}
+
+### Delete exam by UUID
+DELETE http://localhost:3000/api/exams/6cd7f205-b50f-4c0a-b11c-0f1804658d6c

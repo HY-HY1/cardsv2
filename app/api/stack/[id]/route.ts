@@ -66,8 +66,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
-// PUT: [Reserved for future use, e.g., updating stack info]
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
     try {
       const { id } = params; // Stack UUID

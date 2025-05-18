@@ -1,6 +1,6 @@
 // hooks/useSubjects.ts
 import { CreateSubject, EditSubject } from "@/types/RequestTypes"
-import { GetSubjectsRequestTypes } from "@/types/ResponseTypes"
+import { CreateSubjectResponse, GetSubjectByIDResponse, GetSubjectsRequestTypes, Subject } from "@/types/ResponseTypes"
 import axios, { AxiosResponse } from "axios"
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL + "/api"
@@ -11,14 +11,15 @@ export async function getSubjectsRequest() {
 }
 
 export async function getSubjectByIdRequest(id: string) {
-  const response = await axios.get(`${baseUrl}/subject/${id}`)
+  const response : AxiosResponse<GetSubjectByIDResponse> = await axios.get(`${baseUrl}/subject/${id}`)
   return response.data
 }
 
 export async function createSubjectRequest(data: CreateSubject) {
-  await axios.post(`${baseUrl}/subject`, data, {
+  const response : AxiosResponse<CreateSubjectResponse> = await axios.post(`${baseUrl}/subject`, data, {
     headers: { "Content-Type": "application/json" },
   })
+  return response.data
 }
 
 export async function editSubjectRequest(data: EditSubject) {

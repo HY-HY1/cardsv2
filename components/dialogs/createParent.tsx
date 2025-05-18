@@ -25,9 +25,10 @@ export function CreateParent({
   title,
   description,
   onClickFunction,
+  
 }: CreateParentTypes) {
-  const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
+  const [name, setName] = useState<string>();
+  const [desc, setDesc] = useState<string>();
 
   return (
       <DialogContent className="sm:max-w-[425px]">

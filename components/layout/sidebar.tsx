@@ -1,22 +1,41 @@
-"use client"
-import { memo } from "react"
-import { Home, Search, Settings, Book, Plus } from "lucide-react"
-import Link from "next/link"
-import { useSubjectsContext } from "@/context/SubjectContext"
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubItem } from "@/components/ui/sidebar"
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@radix-ui/react-collapsible"
-import { Dialog, DialogTrigger } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { CreateParent } from "../dialogs/createParent"
+"use client";
+import { memo } from "react";
+import { Home, Search, Settings, Book, Plus, Calendar, ChartBar } from "lucide-react";
+import Link from "next/link";
+import { useSubjectsContext } from "@/context/SubjectContext";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@radix-ui/react-collapsible";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { CreateParent } from "../dialogs/createParent";
+import { useStacksContext } from "@/context/StackContext";
 
 const items = [
   { title: "Home", url: "#", icon: Home },
+  { title: "Exams", url: "/app/exams", icon: Calendar },
+  { title: "Statistics", url: "/app/statistics", icon: ChartBar },
   { title: "Search", url: "#", icon: Search },
   { title: "Settings", url: "#", icon: Settings },
-]
+];
 
 function SidebarComponent() {
-  const { subjects, createSubject } = useSubjectsContext()
+  const { subjects, createSubject } = useSubjectsContext();
+  const { stacks } = useStacksContext();
 
   return (
     <Sidebar>
@@ -46,7 +65,10 @@ function SidebarComponent() {
                         title="Create Subject"
                         description="Create a new subject"
                         onClickFunction={({ name, description }) => {
-                          createSubject({name: name, description: description})
+                          createSubject({
+                            name: name,
+                            description: description,
+                          });
                         }}
                       />
                     </Dialog>
@@ -60,7 +82,10 @@ function SidebarComponent() {
                       <SidebarMenuItem>
                         <div className="w-full flex items-center justify-between">
                           <CollapsibleTrigger asChild>
-                            <Link href={`/app/${subject.uuid}`} className="w-full">
+                            <Link
+                              href={`/app/cards/${subject.uuid}`}
+                              className="w-full"
+                            >
                               <SidebarMenuButton className="col-span-4">
                                 <span>{subject.name}</span>
                               </SidebarMenuButton>
@@ -69,7 +94,11 @@ function SidebarComponent() {
 
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="p-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="p-1"
+                              >
                                 <Plus size={14} className="opacity-60" />
                               </Button>
                             </DialogTrigger>
@@ -77,10 +106,14 @@ function SidebarComponent() {
                               title="Create Stack"
                               description={`Create a new stack under ${subject.name}`}
                               onClickFunction={({ name, description }) => {
-                                console.log("Creating stack under subject:", subject.uuid, {
-                                  name,
-                                  description,
-                                })
+                                console.log(
+                                  "Creating stack under subject:",
+                                  subject.uuid,
+                                  {
+                                    name,
+                                    description,
+                                  }
+                                );
                                 // Add your logic here
                               }}
                             />
@@ -90,9 +123,30 @@ function SidebarComponent() {
 
                       <CollapsibleContent>
                         <SidebarMenuSub>
-                          <SidebarMenuSubItem>
-                            <span className="text-muted-foreground pl-2">Stacks coming soon...</span>
-                          </SidebarMenuSubItem>
+                          {stacks.filter(
+                            (stack) => stack.subjectId === subject.uuid
+                          ).length > 0 ? (
+                            stacks
+                              .filter(
+                                (stack) => stack.subjectId === subject.uuid
+                              )
+                              .map((stack) => (
+                                <SidebarMenuSubItem key={stack.uuid}>
+                                  <Link
+                                    href={`/app/cards/${subject.uuid}/${stack.uuid}`}
+                                    className="block w-full text-sm hover:underline pl-2"
+                                  >
+                                    {stack.name}
+                                  </Link>
+                                </SidebarMenuSubItem>
+                              ))
+                          ) : (
+                            <SidebarMenuSubItem>
+                              <span className="text-muted-foreground pl-2">
+                                No stacks yet
+                              </span>
+                            </SidebarMenuSubItem>
+                          )}
                         </SidebarMenuSub>
                       </CollapsibleContent>
                     </Collapsible>
@@ -116,7 +170,7 @@ function SidebarComponent() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
 
-export const AppSidebar = memo(SidebarComponent)
+export const AppSidebar = memo(SidebarComponent);

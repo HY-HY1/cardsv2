@@ -1,4 +1,3 @@
-
 export interface BaseFlashcard {
     _id: string;
     uuid: string;
@@ -21,10 +20,14 @@ export interface GetSubjectsRequestTypes {
 export interface Stack extends BaseFlashcard {
   uuid: string;
   cardIds: string[];
-  name: string; // Add name
-  description: string; // Add description
-};
-  
+  name: string;
+  description: string;
+  subjectId: string;
+}
+
+export type GetSubjectByIDResponse = {
+  subject: Subject[]
+}
 
 export type GetStackResponse = {
   stacks: Stack[];
@@ -44,6 +47,11 @@ export type EditStackResponse = {
   message: string;
 };
 
+export type CreateSubjectResponse = {
+  message: string;
+  data: Stack
+}
+
 
 export interface Card extends BaseFlashcard {
   stackId: string;
@@ -61,4 +69,56 @@ export type GetCardsResponse = {
 export type CreateCardResponse = {
   message: string;
   card: Card
+}
+
+export interface ExamBase {
+  uuid: string;
+  examBoard: string;
+  examSubject: string;
+  SubjectId: string;
+  ExamDate: string;       // ISO date string
+  examComponent: string;
+  Stacks: string[];       // Array of UUID strings
+}
+
+
+export interface CreateExamRequest extends Omit<ExamBase, 'uuid' | 'Stacks'> {
+  Stacks?: string[];
+}
+
+export interface UpdateExamRequest extends Partial<Omit<ExamBase, 'uuid'>> {}
+
+export interface ExamIdParams {
+  id: string; // UUID of exam
+}
+
+export interface StackLinkParams extends ExamIdParams {
+  stackId: string; // UUID of stack
+}
+
+
+export interface ExamResponse {
+  exam: ExamBase;
+}
+
+export interface ExamsResponse {
+  exams: ExamBase[];
+}
+
+export interface CreateExamResponse extends ExamResponse {}
+
+export interface UpdateExamResponse extends ExamResponse {}
+
+export interface DeleteExamResponse {
+  deleted: ExamBase;
+}
+
+export interface StackLinkResponse {
+  message: string;    // "Stack linked" or "Stack unlinked"
+  exam: Pick<ExamBase, 'uuid' | 'Stacks'>;
+}
+
+
+export interface ErrorResponse {
+  error: string;
 }

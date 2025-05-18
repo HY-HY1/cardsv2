@@ -18,6 +18,8 @@ import {
   deleteSubjectRequest,
 } from "@/hooks/useSubject"
 
+import { useRouter } from "next/navigation"
+
 export interface SubjectsContextType {
   subjects: Subject[]
   loading: boolean
@@ -37,6 +39,8 @@ export function SubjectsProvider({ children }: { children: ReactNode }) {
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
+  const router = useRouter()
+
   async function getSubjects() {
     setLoading(true)
     try {
@@ -51,7 +55,10 @@ export function SubjectsProvider({ children }: { children: ReactNode }) {
 
   async function getSubjectById(id: string): Promise<Subject | null> {
     try {
-      return await getSubjectByIdRequest(id)
+      const response = await getSubjectByIdRequest(id)
+      if (!response.subject) return null
+      const subject = response.subject as unknown as Subject
+      return subject
     } catch (error) {
       console.error("Error fetching subject:", error)
       return null
@@ -60,8 +67,10 @@ export function SubjectsProvider({ children }: { children: ReactNode }) {
 
   async function createSubject(data: CreateSubject): Promise<void> {
     try {
-      await createSubjectRequest(data)
+      const response = await createSubjectRequest(data)
+      console.log(response)
       await getSubjects() // refresh after creating
+      router.push(`/app/${response.data.uuid}`)
     } catch (error) {
       console.error("Error creating subject:", error)
     }
