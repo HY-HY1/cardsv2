@@ -5,8 +5,8 @@ export interface IExam extends Document {
   examBoard: 'OCR' | 'AQA' | 'Eduqas' | 'Edexcel' | 'Wjec' | string;
   examSubject: string;
   examComponent: string;
-  SubjectId: string;           // <-- UUID string
-  Stacks: string[];            // <-- Array of UUID strings
+  SubjectId: string;           
+  Stacks: string[];            
   ExamDate: Date;
   createdAt: Date;
   updatedAt: Date;
