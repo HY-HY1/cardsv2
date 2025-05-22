@@ -1,3 +1,5 @@
+import { Document } from "mongoose";
+
 export interface BaseFlashcard {
     _id: string;
     uuid: string;
@@ -71,7 +73,7 @@ export type CreateCardResponse = {
   card: Card
 }
 
-export interface ExamBase {
+export interface ExamBase extends Document {
   uuid: string;
   examBoard: string;
   examSubject: string;
@@ -97,9 +99,6 @@ export interface StackLinkParams extends ExamIdParams {
 }
 
 
-export interface ExamResponse {
-  exam: ExamBase;
-}
 
 export interface ExamsResponse {
   exams: ExamBase[];
@@ -122,3 +121,19 @@ export interface StackLinkResponse {
 export interface ErrorResponse {
   error: string;
 }
+
+export interface ExamWithStacks {
+  
+}
+
+export interface ExamResponse {
+  exam: ExamBase & {
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    Stacks: string[];  // UUIDs
+  };
+  linkedStacks: Stack[];
+}
+

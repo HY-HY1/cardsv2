@@ -6,6 +6,7 @@ import React from "react";
 import { ExamCard } from "../_components/ExamCard";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { ExamEditSheet } from "../_components/ExamEditSheet";
+import Link from "next/link";
 
 const AllExams = () => {
   const { exams } = useExams();
@@ -29,21 +30,21 @@ const AllExams = () => {
           </div>
         </header>
         <main>
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 py-4">
             {exams?.map((exam) => (
-              <ExamCard
-                examId={exam.uuid}
-                key={exam.uuid}
-                examBoard={exam.examBoard}
-                examComponent={exam.examComponent}
-                examDate={new Date(exam.ExamDate)}
-                examSubject={exam.examSubject}
-              />
+                <ExamCard
+                  examId={exam.uuid}
+                  key={exam.uuid}
+                  examBoard={exam.examBoard}
+                  examComponent={exam.examComponent}
+                  examDate={new Date(exam.ExamDate)}
+                  examSubject={exam.examSubject}
+                />
             ))}
           </div>
         </main>
       </div>
-      <ExamEditSheet/>
+      <ExamEditSheet />
     </Sheet>
   );
 };

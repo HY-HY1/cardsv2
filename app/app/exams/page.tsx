@@ -7,7 +7,7 @@ import ExamCalendar from "./_sections/ExamCalendar";
 
 const page = () => {
   return (
-    <div className="w-full m-auto">
+    <div className="w-[70vw] m-auto">
       <AllExams/>
       <ExamCalendar/>
     </div>

@@ -11,7 +11,7 @@ export default function ExamsLayout({
       <>
         <header className='w-full'>
         </header>
-        <main className='w-[70vw] m-auto mt-10'>
+        <main className='w-full '>
           {children}
         </main>
       </>
