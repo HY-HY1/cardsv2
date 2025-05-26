@@ -35,7 +35,8 @@ export function CardsProvider({ children }: { children: ReactNode }) {
     setLoading(true)
     try {
       const response = await getCardsRequest(stackId)
-      setCards(response.Cards)
+      console.log("GetCardsRequest Response", response)
+      setCards(response.cards)
     } catch (error) {
       console.error("Error fetching cards:", error)
     } finally {
@@ -65,12 +66,13 @@ export function CardsProvider({ children }: { children: ReactNode }) {
 
   async function deleteCard(cardId: string): Promise<void> {
     try {
-      await deleteCardRequest(cardId)
-      setCards((prev) => prev.filter((card) => card._id !== cardId))
+      await deleteCardRequest(cardId);
+      setCards((prev) => prev.filter((card) => card.uuid !== cardId));
     } catch (error) {
-      console.error("Error deleting card:", error)
+      console.error("Error deleting card:", error);
     }
   }
+  
 
   return (
     <CardsContext.Provider

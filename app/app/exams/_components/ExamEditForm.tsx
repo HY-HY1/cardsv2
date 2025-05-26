@@ -143,7 +143,7 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
       ExamDate: values.examDate,
       examComponent: values.examComponent,
       SubjectId: subject.uuid,
-      linkedStacks: values.linkedStacks || [],
+      Stacks: values.linkedStacks || [],
     };
   
     console.log(apiValues);

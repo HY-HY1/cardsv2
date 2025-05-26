@@ -1,4 +1,4 @@
-import { mongooseConnect } from "@/lib/Mongoose";
+dsimport { mongooseConnect } from "@/lib/Mongoose";
 import Exam from "@/models/Exam";
 import { NextResponse } from "next/server";
 

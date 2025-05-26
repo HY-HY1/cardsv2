@@ -1,0 +1,23 @@
+POST http://localhost:3000/api/revise
+Content-Type: application/json
+
+{
+  "uuid": "4f357685-06c9-4d7a-87fa-7dd2f4839ea8",
+  "type": "exam"
+}
+###
+POST http://localhost:3000/api/revise
+Content-Type: application/json
+
+{
+  "uuid": "7bb67e80-5458-444c-a971-8d51678dd3d6",
+  "type": "subject"
+}
+###
+POST http://localhost:3000/api/revise
+Content-Type: application/json
+
+{
+  "uuid": "5caeb689-43e0-469a-9413-74b71dd9334e",
+  "type": "stack"
+}

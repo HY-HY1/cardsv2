@@ -33,6 +33,7 @@ import React, {
     DeleteExamResponse,
     StackLinkResponse,
   } from "@/types/ResponseTypes";
+import { fetchExamByIdResponse } from "@/app/app/exams/[id]/page";
   
   interface ExamsContextType {
     exams: ExamBase[] | null;
@@ -40,7 +41,7 @@ import React, {
     error: string | null;
   
     fetchExams: () => Promise<void>;
-    fetchExamById: (id: ExamIdParams["id"]) => Promise<ExamBase | null>;
+    fetchExamById: (id: ExamIdParams["id"]) => Promise<fetchExamByIdResponse | null>;
     createExam: (data: CreateExamRequest) => Promise<ExamBase | null>;
     updateExam: (id: ExamIdParams["id"], data: UpdateExamRequest) => Promise<ExamBase | null>;
     deleteExam: (id: ExamIdParams["id"]) => Promise<ExamBase | null>;
@@ -72,8 +73,8 @@ import React, {
       setLoading(true);
       setError(null);
       try {
-        const data: ExamResponse = await getExamByIdRequest(id);
-        return data.exam;
+        const data: fetchExamByIdResponse = await getExamByIdRequest(id);
+        return data;
       } catch (err: any) {
         setError(err.message || "Failed to fetch exam");
         return null;

@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/card/5caeb689-43e0-469a-9413-74b71dd9334e
 #Content-Type: application/json
 ###
-POST http://localhost:3000/api/card/5caeb689-43e0-469a-9413-74b71dd9334e
+POST http://localhost:3000/api/card/33ee3983-50ee-455b-afe4-20f0443bf131
 
 {
   "question": "Test card",

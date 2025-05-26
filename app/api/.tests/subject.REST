@@ -12,14 +12,14 @@ Content-Type: application/json
 
 
 ###
-PUT http://localhost:3000/api/subject/9ad60aea-4883-4297-aed9-fdf594de46cc
+PUT http://localhost:3000/api/subject/14ccaa40-984b-422f-9a77-8e3d4cddd906
 Content-Type: application/json
 
 {
-    "name": "Maths",
+    "name": "Business",
     "description":""
 }
 ###
-DELETE http://localhost:3000/api/subject/d62784e1-9181-470b-8a1c-352b77611798
+DELETE http://localhost:3000/api/subject/14ccaa40-984b-422f-9a77-8e3d4cddd906
 Content-Type: application/json
 

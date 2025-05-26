@@ -1,3 +1,4 @@
+import { fetchExamByIdResponse } from "@/app/app/exams/[id]/page";
 import {
     CreateExamRequest,
     UpdateExamRequest,
@@ -22,7 +23,7 @@ import {
   }
   
   export async function getExamByIdRequest(id: ExamIdParams["id"]) {
-    const response: AxiosResponse<ExamResponse> = await axios.get(`${baseUrl}/${id}`);
+    const response: AxiosResponse<fetchExamByIdResponse> = await axios.get(`${baseUrl}/${id}`);
     return response.data;
   }
   

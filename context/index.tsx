@@ -2,6 +2,7 @@ import { SubjectsProvider } from "./SubjectContext";
 import { StacksProvider } from "./StackContext";
 import { CardsProvider } from "./CardContext";
 import { ExamsProvider } from "./ExamContext";
+import { RevisionCardsProvider } from "./ReviseContext";
 
 export default function ContextProvider({
   children,
@@ -12,7 +13,9 @@ export default function ContextProvider({
     <ExamsProvider>
       <SubjectsProvider>
         <StacksProvider>
-          <CardsProvider>{children}</CardsProvider>
+          <RevisionCardsProvider>
+            <CardsProvider>{children}</CardsProvider>
+          </RevisionCardsProvider>
         </StacksProvider>
       </SubjectsProvider>
     </ExamsProvider>

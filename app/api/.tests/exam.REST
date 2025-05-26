@@ -9,14 +9,13 @@ POST http://localhost:3000/api/exams
 Content-Type: application/json
 
 {
-  "examBoard": "OCR",
-  "examSubject": "Computer Science",
+  "examBoard": "Edexcel",
+  "examSubject": "Maths",
   "examComponent": "Paper 2",
-  "examDate": "2025-06-05",
-  "SubjectId": "SUBJECT_UUID_HERE",
-  "Stacks": ["id-1", "id-2"]
+  "ExamDate": "2025-06-05",
+  "SubjectId": "7bb67e80-5458-444c-a971-8d51678dd3d6",
+  "Stacks": ["5caeb689-43e0-469a-9413-74b71dd9334e", "d69dce4b-e310-4793-b564-c2484cd158f8"]
 }
-
 ###
 ### Link stack to exam
 PUT http://localhost:3000/api/exams/5b1cb541-710a-46bc-bfc1-49396221c326/8c3a8ee6-702a-44ae-abf8-8d84f39de8b0

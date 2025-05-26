@@ -12,19 +12,29 @@ import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { DeleteAlert } from "@/components/dialogs/deleteAlert";
 import { useRouter } from "next/navigation";
 import { useStacksContext } from "@/context/StackContext";
+import Link from "next/link";
 import { Plus } from "lucide-react";
 
 const SubjectPage = () => {
   const { subject } = useParams(); // Get 'subject' from the URL params
-  const { subjects, loading: subjectLoading, editSubject, deleteSubject } = useSubjectsContext();
-  const { stacks, loading: stacksLoading, getStacks, createStack } = useStacksContext();
+  const {
+    subjects,
+    loading: subjectLoading,
+    editSubject,
+    deleteSubject,
+  } = useSubjectsContext();
+  const {
+    stacks,
+    loading: stacksLoading,
+    getStacks,
+    createStack,
+  } = useStacksContext();
   const [currentSubject, setCurrentSubject] = useState<Subject | null>(null);
 
   const router = useRouter();
 
   useEffect(() => {
     if (typeof subject === "string") {
-      // Fetch stacks for the subject when the page loads or subject changes
       getStacks(subject);
     }
   }, [subject, getStacks]);
@@ -36,7 +46,9 @@ const SubjectPage = () => {
   }, [subject, subjects]);
 
   // Filter stacks to only those belonging to currentSubject
-  const filteredStacks = stacks.filter((stack) => stack.subjectId === currentSubject?.uuid);
+  const filteredStacks = stacks.filter(
+    (stack) => stack.subjectId === currentSubject?.uuid
+  );
 
   if (subjectLoading || stacksLoading) {
     return <div>Loading...</div>;
@@ -89,6 +101,14 @@ const SubjectPage = () => {
       </header>
 
       <div className="mt-4 w-full">
+        <div className="w-full flex flex-row py-2 ">
+          <h3 className="w-full flex justify-start">Stacks</h3>
+          <div className="w-full flex justify-end">
+           <Link href={`/app/cards/revise/${currentSubject.uuid}?type=subject`}>
+            <Button variant={"default"}>Start Revising</Button>
+           </Link>
+          </div>
+        </div>
         {filteredStacks.length > 0 ? (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredStacks.map((stack) => (

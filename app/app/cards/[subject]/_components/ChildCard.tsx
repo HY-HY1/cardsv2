@@ -21,7 +21,7 @@ import { useParams } from "next/navigation";
 const ChildCard: React.FC<ChildCardProps> = ({ stack }) => {
   const { subject } = useParams();
   return (
-    <Card className="w-full min-w-[150px] min-h-[200px]">
+    <Card className="w-full hover:bg-gray-50 transition-all min-w-[150px] min-h-[200px]">
       <CardHeader>
         <CardTitle>{stack.name}</CardTitle>
         <CardDescription>{stack.description}</CardDescription>
