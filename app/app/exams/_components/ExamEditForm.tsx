@@ -59,9 +59,6 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
   const [selectedStackId, setSelectedStackId] = useState<string>("");
   const [exam, setExam] = useState<ExamBase | null>(null);
 
-
-  
-
   const form = useForm<z.infer<typeof examFormSchema>>({
     resolver: zodResolver(examFormSchema),
     defaultValues: {
@@ -74,32 +71,31 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
   });
 
   const handleEdit = (updatedExam: ExamBase) => {
-
     if (onEditSuccess) {
       onEditSuccess(updatedExam);
     }
-  }
+  };
 
   useEffect(() => {
     const fetchResponse = async () => {
       if (!examId) return;
-  
+
       const examData = await fetchExamById(examId);
       if (examData) {
         setExam(examData);
         console.log(`Fetched Exam: ${examData.uuid}`);
-  
+
         // Reset the form with the fetched exam data
         form.reset({
           examSubject: examData.examSubject,
           examBoard: examData.examBoard,
           examComponent: examData.examComponent,
           examDate: examData.ExamDate,
-          linkedStacks: [],
+          linkedStacks: examData.linkedStacks || [],
         });
       }
     };
-  
+
     fetchResponse();
   }, [examId, form]);
 
@@ -136,7 +132,7 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
   async function onSubmit(values: z.infer<typeof examFormSchema>) {
     const subject = subjects.find((s) => s.name === values.examSubject);
     if (!subject) return;
-  
+
     const apiValues = {
       examBoard: values.examBoard,
       examSubject: values.examSubject,
@@ -145,9 +141,9 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
       SubjectId: subject.uuid,
       Stacks: values.linkedStacks || [],
     };
-  
+
     console.log(apiValues);
-  
+
     if (examId) {
       const updated = await updateExam(examId, apiValues);
       if (updated && onEditSuccess) {
@@ -157,7 +153,6 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
       await createExam(apiValues); // (Handle creation separately if needed)
     }
   }
-  
 
   return (
     <Form {...form}>
@@ -170,8 +165,7 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
             <FormItem>
               <FormLabel>Subject</FormLabel>
               <FormControl>
-              <Select value={field.value} onValueChange={field.onChange}>
-
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a subject" />
                   </SelectTrigger>
@@ -198,8 +192,7 @@ export function ExamForm({ examId, onEditSuccess }: ExamFormProps) {
             <FormItem className="w-full">
               <FormLabel>Exam Board</FormLabel>
               <FormControl>
-              <Select value={field.value} onValueChange={field.onChange}>
-
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select an exam board" />
                   </SelectTrigger>
