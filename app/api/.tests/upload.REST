@@ -1,0 +1,2 @@
+### Get an uploaded image by filename
+GET http://localhost:3000/api/upload/1748616514332-azt.png

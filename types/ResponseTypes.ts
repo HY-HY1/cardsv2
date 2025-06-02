@@ -26,6 +26,7 @@ export interface Card extends BaseDocument {
   question: string;
   answer: string;
   hint: string;
+  imageUrl : string
   correctAttempts: string;
   attempts: string;
 }

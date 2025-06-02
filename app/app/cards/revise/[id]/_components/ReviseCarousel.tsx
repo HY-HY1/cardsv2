@@ -19,7 +19,7 @@ export function ReviseCarousel({ data }: ReviseCarouselProps) {
       <CarouselContent>
         {data.cards.map((card, index) => (
           <CarouselItem key={card.uuid || index}>
-            <ReviseCard question={card.question} answer={card.answer} />
+            <ReviseCard uuid={card.uuid} question={card.question} answer={card.answer} hint={card.hint} image={card.imageUrl} />
           </CarouselItem>
         ))}
       </CarouselContent>

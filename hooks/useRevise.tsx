@@ -18,3 +18,14 @@ export async function getRevisionCardsRequest({ id, type } : getRevisionCardsReq
         console.error(error)
     }
 }
+
+export async function putRevisionAnswer({ id, type } : getRevisionCardsRequestProps) {
+    try {
+        const response: AxiosResponse<getRevisionCards> = await axios.put(`${baseUrl}/${id}`,
+            { type: type }
+        )
+        return response.data
+    } catch (error: unknown) {
+        console.error(error)
+    }
+}

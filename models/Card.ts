@@ -6,6 +6,7 @@ const cardSchema = new Schema({
   question: { type: String, required: true },
   answer: { type: String, required: true },
   hint: { type: String },
+  imageUrl : { type: String, unique: true},
   correctAttempts: { type: Number, default: 0 },
   attempts: { type: Number, default: 0 },
   lastAttempted: { type: Date },

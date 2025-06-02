@@ -28,31 +28,32 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   export async function POST(req: Request, { params }: { params: { id: string } }) {
     try {
       const { id } = params; // Stack ID
-      const { question, answer, hint } = await req.json();
+      const { question, answer, hint, imageUrl } = await req.json();
   
-      // Validate required fields
       if (!question || !answer) {
         return NextResponse.json({ error: "Question and Answer are required" }, { status: 400 });
       }
   
-      // Connect to the database
       await mongooseConnect();
   
       const uuid = uuidv4();
+
+      // if(imageUrl) {
+      //   console.log()
+      //   return NextResponse.json(`Image Found ${imageUrl}, type ${typeof imageUrl}`, { status: 400})
+      // }
   
-      // Create the new card
       const newCard = new Card({
         uuid: uuid,
         stackId: id,
         question: question,
         answer: answer,
         hint: hint,
+        imageUrl: imageUrl
       });
   
-      // Save the card to the database
       await newCard.save();
   
-      // Add the card ID to the stack's cardIds array
       const stack = await Stack.findOne({ uuid: id });
       if (!stack) {
         return NextResponse.json({ error: "Stack not found" }, { status: 404 });
@@ -73,26 +74,26 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   export async function PUT(req: Request, { params }: { params: { id: string } }) {
     try {
       const { id } = params; // Card ID
-      const { question, answer, hint } = await req.json(); // Extract data from request body
+      const { question, answer, hint, imageUrl } = await req.json(); // Extract data from request body
+
+      console.log(question, answer, hint, imageUrl)
   
-      // Validate input
       if (!question || !answer) {
         return NextResponse.json({ error: 'Question and Answer are required' }, { status: 400 });
       }
   
-      // Connect to database
       await mongooseConnect();
   
-      // Find the card by UUID
       const card = await Card.findOne({ uuid: id });
       if (!card) {
         return NextResponse.json({ error: 'Card not found' }, { status: 404 });
       }
   
-      // Update card details
       card.question = question;
       card.answer = answer;
-      card.hint = hint || card.hint;  // Only update if hint is provided
+      card.hint = hint || card.hint;
+      card.imageUrl = imageUrl || card.imageUrl
+      
   
       // Save the updated card
       await card.save();

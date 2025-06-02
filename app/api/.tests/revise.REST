@@ -21,3 +21,26 @@ Content-Type: application/json
   "uuid": "5caeb689-43e0-469a-9413-74b71dd9334e",
   "type": "stack"
 }
+###
+### Correct Attempt
+PUT http://localhost:3000/api/revise/bd923242-70d9-45e5-850f-d276e87ebd8f
+Content-Type: application/json
+
+{
+  "type": "correct"
+}
+
+### Incorrect Attempt
+PUT http://localhost:3000/api/revise/bd923242-70d9-45e5-850f-d276e87ebd8f
+Content-Type: application/json
+
+{
+  "type": "incorrect"
+}
+
+### Missing Fields
+PUT http://localhost:3000/api/revise/bd923242-70d9-45e5-850f-d276e87ebd8f
+Content-Type: application/json
+
+{}
+###

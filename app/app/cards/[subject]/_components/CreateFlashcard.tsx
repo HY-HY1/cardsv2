@@ -1,13 +1,14 @@
-// app/_components/CreateFlashcard.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, ImagePlus } from "lucide-react";
 import { useCardsContext } from "@/context/CardContext";
 import { Card } from "@/types/ResponseTypes";
+import ImageUpload from "./ImageUpload";
+import axios from "axios";
 
 interface FlashCardPreviewProps {
   card?: Card;
@@ -20,25 +21,84 @@ const FlashCardPreview = ({ card, stackId }: FlashCardPreviewProps) => {
   const [hint, setHint] = useState(card?.hint || "");
   const [showHint, setShowHint] = useState(!!card?.hint);
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [showImageUpload, setShowImageUpload] = useState(false);
+
   const { createCard, editCard } = useCardsContext();
+
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreviewUrl(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreviewUrl(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [selectedFile]);
 
   const handleSubmit = async () => {
     if (!question.trim() || !answer.trim()) return;
 
-    const payload = { question, answer, hint };
+    let uploadedImageUrl = "";
+
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      try {
+        const uploadResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        uploadedImageUrl = uploadResponse.data.filename || "";
+      } catch (error) {
+        console.error("Image upload failed:", error);
+      }
+    }
+
+    const payload = {
+      question,
+      answer,
+      hint,
+      imageUrl: uploadedImageUrl !== "" ? uploadedImageUrl : undefined,
+    };
+
+    const filteredPayload = Object.fromEntries(
+      Object.entries(payload).filter(
+        ([_, value]) =>
+          value !== "" &&
+          value !== undefined &&
+          !(Array.isArray(value) && value.length === 0)
+      )
+    ) as {
+      question: string;
+      answer: string;
+      hint?: string;
+      imageUrl?: string;
+    };
 
     try {
       if (card?.uuid) {
-        await editCard(card.uuid, payload);
+        await editCard(card.uuid, filteredPayload);
         console.log("Card edited:", card.uuid);
       } else {
-        await createCard(stackId, payload);
+        await createCard(stackId, filteredPayload);
         console.log("Card created");
-        // Reset form
         setQuestion("");
         setAnswer("");
         setHint("");
         setShowHint(false);
+        setSelectedFile(null);
+        setShowImageUpload(false);
       }
     } catch (error) {
       console.error("Error saving card:", error);
@@ -48,7 +108,7 @@ const FlashCardPreview = ({ card, stackId }: FlashCardPreviewProps) => {
   return (
     <div className="w-full rounded-xl border shadow-sm bg-white mt-6">
       <div className="p-6 space-y-6">
-        <div className="w-full grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="question">Question</Label>
             <Input
@@ -68,6 +128,52 @@ const FlashCardPreview = ({ card, stackId }: FlashCardPreviewProps) => {
               placeholder="Enter an answer"
             />
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 h-full sm:grid-cols-5 gap-4 items-start">
+          {showImageUpload ? (
+            <>
+              <div className="sm:col-span-4 h-full">
+                <Label htmlFor="upload" className="py-2">
+                  Add Image
+                </Label>
+                <ImageUpload
+                  onFileSelected={(file: File | null) => setSelectedFile(file)}
+                  singleFile={true}
+                />
+                <div
+                  className="mt-2 text-sm text-blue-600 cursor-pointer hover:underline"
+                  onClick={() => {
+                    setSelectedFile(null);
+                    setShowImageUpload(false);
+                  }}
+                >
+                  Remove Image
+                </div>
+              </div>
+
+              {previewUrl && (
+                <div className="sm:col-span-1">
+                  <Label className="py-2">Preview</Label>
+                  <div className="relative w-full h-auto border rounded-md overflow-hidden">
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="object-cover w-full h-24 rounded"
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div
+              className="flex items-center text-sm text-blue-600 cursor-pointer hover:underline"
+              onClick={() => setShowImageUpload(true)}
+            >
+              <ImagePlus className="w-4 h-4 mr-2" />
+              Add Image?
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
